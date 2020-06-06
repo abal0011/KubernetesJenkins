@@ -9,20 +9,24 @@ pipeline {
 		}
 		
 		stage('Build Docker Image') {
-			steps {			
+			steps {		
+                withCredentials([usernamePassword(credentialsId:'dockerhub',passwordVariable:'PASSWORD',usernameVariable:'USERNAME')]) {	
 					sh '''
 						docker build -t aravindb15/capstone Deploy-Cluster/.
 					'''
-			}
+                }
+            }
 		}
 
 		stage('Push Image To Dockerhub') {
-			steps {				
+			steps {		
+                withCredentials([usernamePassword(credentialsId:'dockerhub',passwordVariable:'PASSWORD',usernameVariable:'USERNAME')]) {		
 					sh '''
-						cat ~/my_password.txt | docker login -u aravindb15 -p --password-stdin
+						docker login -u $USERNAME -p $PASSWORD
 						docker push aravindb15/capstone
 					'''				
-			}
+                }
+            }
 		}
 
 		stage('Set current kubectl context') {
