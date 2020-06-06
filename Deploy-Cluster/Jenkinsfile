@@ -11,7 +11,7 @@ pipeline {
 		stage('Build Docker Image') {
 			steps {			
 					sh '''
-						docker build -t aravindb15/capstone .
+						docker build -t aravindb15/capstone Deploy-Cluster/.
 					'''
 			}
 		}
@@ -39,7 +39,7 @@ pipeline {
 			steps {
 				withAWS(region:'us-west-2', credentials:'Jenkins') {
 					sh '''
-						kubectl apply -f ./blue-controller.json
+						kubectl apply -f Deploy-Cluster/blue-controller.json
 					'''
 				}
 			}
@@ -49,7 +49,7 @@ pipeline {
 			steps {
 				withAWS(region:'us-west-2', credentials:'Jenkins') {
 					sh '''
-						kubectl apply -f ./green-controller.json
+						kubectl apply -f Deploy-Cluster/green-controller.json
 					'''
 				}
 			}
@@ -59,7 +59,7 @@ pipeline {
 			steps {
 				withAWS(region:'us-west-2', credentials:'Jenkins') {
 					sh '''
-						kubectl apply -f ./blue-service.json
+						kubectl apply -f Deploy-Cluster/blue-service.json
 					'''
 				}
 			}
@@ -75,7 +75,7 @@ pipeline {
 			steps {
 				withAWS(region:'us-west-2', credentials:'Jenkins') {
 					sh '''
-						kubectl apply -f ./green-service.json
+						kubectl apply -f Deploy-Cluster/green-service.json
 					'''
 				}
 			}
